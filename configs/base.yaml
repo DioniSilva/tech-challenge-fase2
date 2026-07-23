@@ -1,0 +1,12 @@
+dataset:
+  raw_path: data/external/online_shoppers_intention.csv
+  target_column: Revenue
+
+split:
+  test_size: 0.2
+  random_state: 42
+
+model:
+  name: LogisticRegression
+  params:
+    max_iter: 1000
