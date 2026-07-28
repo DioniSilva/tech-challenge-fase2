@@ -3,7 +3,7 @@ PYTHON_BIN := $(shell for bin in python3.12 python3.11; do command -v $$bin >/de
 PACKAGE_MODULE := purchase_propensity
 CONFIG_PATH ?= configs/base.yaml
 
-.PHONY: help venv setup check test train fetch-data
+.PHONY: help venv setup check test prepare train fetch-data dvc-repro
 
 help:
 	@printf "Available targets:\n"
@@ -11,8 +11,10 @@ help:
 	@printf "  make setup  - install project dependencies with Poetry\n"
 	@printf "  make check  - validate pyproject metadata\n"
 	@printf "  make test   - run automated tests\n"
+	@printf "  make prepare - generate processed train/test splits from the raw dataset\n"
 	@printf "  make train  - run the baseline training entrypoint\n"
 	@printf "  make fetch-data - fetch the official UCI dataset into data/external/\n"
+	@printf "  make dvc-repro - reproduce the configured DVC pipeline\n"
 
 venv:
 	@if [ -z "$(PYTHON_BIN)" ]; then \
@@ -31,8 +33,14 @@ check:
 test:
 	$(POETRY) run pytest -q
 
+prepare:
+	$(POETRY) run python -m $(PACKAGE_MODULE).prepare --config $(CONFIG_PATH)
+
 train:
 	$(POETRY) run python -m $(PACKAGE_MODULE).train --config $(CONFIG_PATH)
 
 fetch-data:
 	$(POETRY) run python -m $(PACKAGE_MODULE).dataset_fetch
+
+dvc-repro:
+	$(POETRY) run dvc repro

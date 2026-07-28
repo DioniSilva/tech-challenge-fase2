@@ -15,5 +15,6 @@ data/external/*
 data/interim/*
 data/processed/*
 !data/external/.gitkeep
+!data/external/*.dvc
 !data/interim/.gitkeep
 !data/processed/.gitkeep

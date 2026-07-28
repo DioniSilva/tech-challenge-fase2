@@ -1,0 +1,28 @@
+stages:
+  prepare:
+    cmd: poetry run python -m purchase_propensity.prepare --config configs/base.yaml
+    deps:
+      - configs/base.yaml
+      - data/external/online_shoppers_intention.csv
+      - src/purchase_propensity/config.py
+      - src/purchase_propensity/data.py
+      - src/purchase_propensity/prepare.py
+    outs:
+      - data/processed/train.csv
+      - data/processed/test.csv
+
+  train:
+    cmd: poetry run python -m purchase_propensity.train --config configs/base.yaml
+    deps:
+      - configs/base.yaml
+      - data/processed/train.csv
+      - data/processed/test.csv
+      - src/purchase_propensity/config.py
+      - src/purchase_propensity/data.py
+      - src/purchase_propensity/evaluate.py
+      - src/purchase_propensity/features.py
+      - src/purchase_propensity/train.py
+    outs:
+      - artifacts/model.joblib
+    metrics:
+      - artifacts/metrics.json

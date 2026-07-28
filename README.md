@@ -106,6 +106,7 @@ Fluxo mínimo:
 ```bash
 make venv
 make setup
+make prepare
 make test
 make train
 ```
@@ -117,7 +118,9 @@ Comandos disponíveis:
 - `make setup`: inicializa o ambiente e instala dependências com `Poetry`
 - `make check`: valida o `pyproject.toml`
 - `make test`: executa os testes
-- `make train`: executa o baseline
+- `make prepare`: gera os conjuntos processados de treino e teste
+- `make train`: treina o baseline a partir dos dados processados
+- `make dvc-repro`: reproduz o pipeline definido no `dvc.yaml`
 
 ## Observação sobre dados
 
@@ -139,6 +142,27 @@ Se o arquivo já existir e você quiser substituir, use:
 ```bash
 poetry run python -m purchase_propensity.dataset_fetch --overwrite
 ```
+
+## Pipeline com DVC
+
+Fluxo mínimo esperado para a entrega:
+
+```bash
+make fetch-data
+make dvc-repro
+```
+
+Saídas principais do pipeline:
+
+- `data/processed/train.csv`
+- `data/processed/test.csv`
+- `artifacts/model.joblib`
+- `artifacts/metrics.json`
+
+O `dvc.yaml` materializa o fluxo mínimo aderente ao PDF:
+
+- `prepare`: valida o dataset bruto e gera os splits processados
+- `train`: treina o baseline e salva métricas + modelo
 
 ## Próximos passos recomendados
 

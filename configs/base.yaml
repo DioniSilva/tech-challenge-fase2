@@ -10,3 +10,11 @@ model:
   name: LogisticRegression
   params:
     max_iter: 1000
+
+processed:
+  train_path: data/processed/train.csv
+  test_path: data/processed/test.csv
+
+artifacts:
+  model_path: artifacts/model.joblib
+  metrics_path: artifacts/metrics.json

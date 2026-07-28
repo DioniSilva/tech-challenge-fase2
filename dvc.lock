@@ -1,0 +1,80 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: poetry run python -m purchase_propensity.prepare --config 
+      configs/base.yaml
+    deps:
+    - path: configs/base.yaml
+      hash: md5
+      md5: 54aefaefd67975a7485bc1d91dc7c1f7
+      size: 374
+    - path: data/external/online_shoppers_intention.csv
+      hash: md5
+      md5: a319389cb6beb00470abd5def220258c
+      size: 1156949
+    - path: src/purchase_propensity/config.py
+      hash: md5
+      md5: 079ee42f62830296448a601e659880a2
+      size: 1761
+    - path: src/purchase_propensity/data.py
+      hash: md5
+      md5: 88faf84b5b367f42bc977ed544cbf1cf
+      size: 1453
+    - path: src/purchase_propensity/prepare.py
+      hash: md5
+      md5: 464b36723081fd2163a12b27723584a6
+      size: 1490
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 3a621c943b7decf7cce36deb17b67e68
+      size: 231648
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 0ef24da64934922dc1bc9d174281e9ff
+      size: 925538
+  train:
+    cmd: poetry run python -m purchase_propensity.train --config 
+      configs/base.yaml
+    deps:
+    - path: configs/base.yaml
+      hash: md5
+      md5: 54aefaefd67975a7485bc1d91dc7c1f7
+      size: 374
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 3a621c943b7decf7cce36deb17b67e68
+      size: 231648
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 0ef24da64934922dc1bc9d174281e9ff
+      size: 925538
+    - path: src/purchase_propensity/config.py
+      hash: md5
+      md5: 079ee42f62830296448a601e659880a2
+      size: 1761
+    - path: src/purchase_propensity/data.py
+      hash: md5
+      md5: 88faf84b5b367f42bc977ed544cbf1cf
+      size: 1453
+    - path: src/purchase_propensity/evaluate.py
+      hash: md5
+      md5: 73b21e944851b6b6f5a24d7670af94b5
+      size: 664
+    - path: src/purchase_propensity/features.py
+      hash: md5
+      md5: 59451c77d609820119e26653e56561d1
+      size: 1074
+    - path: src/purchase_propensity/train.py
+      hash: md5
+      md5: 345c7d26264c5e545922258bb47729ae
+      size: 2569
+    outs:
+    - path: artifacts/metrics.json
+      hash: md5
+      md5: 0e0c7c952900ff031c39abd8e065e38e
+      size: 165
+    - path: artifacts/model.joblib
+      hash: md5
+      md5: 9171fda6eb99cc94fdcd9f2373cb2702
+      size: 5642

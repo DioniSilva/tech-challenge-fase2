@@ -25,10 +25,24 @@ class ModelConfig:
 
 
 @dataclass(frozen=True)
+class ProcessedDataConfig:
+    train_path: Path
+    test_path: Path
+
+
+@dataclass(frozen=True)
+class ArtifactConfig:
+    model_path: Path
+    metrics_path: Path
+
+
+@dataclass(frozen=True)
 class AppConfig:
     dataset: DatasetConfig
     split: SplitConfig
     model: ModelConfig
+    processed: ProcessedDataConfig
+    artifacts: ArtifactConfig
 
 
 def load_config(config_path: str | Path) -> AppConfig:
@@ -46,5 +60,13 @@ def load_config(config_path: str | Path) -> AppConfig:
         model=ModelConfig(
             name=payload["model"]["name"],
             params=dict(payload["model"].get("params", {})),
+        ),
+        processed=ProcessedDataConfig(
+            train_path=Path(payload["processed"]["train_path"]),
+            test_path=Path(payload["processed"]["test_path"]),
+        ),
+        artifacts=ArtifactConfig(
+            model_path=Path(payload["artifacts"]["model_path"]),
+            metrics_path=Path(payload["artifacts"]["metrics_path"]),
         ),
     )
