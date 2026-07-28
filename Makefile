@@ -3,7 +3,7 @@ PYTHON_BIN := $(shell for bin in python3.12 python3.11; do command -v $$bin >/de
 PACKAGE_MODULE := purchase_propensity
 CONFIG_PATH ?= configs/base.yaml
 
-.PHONY: help venv setup check test train
+.PHONY: help venv setup check test train fetch-data
 
 help:
 	@printf "Available targets:\n"
@@ -12,6 +12,7 @@ help:
 	@printf "  make check  - validate pyproject metadata\n"
 	@printf "  make test   - run automated tests\n"
 	@printf "  make train  - run the baseline training entrypoint\n"
+	@printf "  make fetch-data - fetch the official UCI dataset into data/external/\n"
 
 venv:
 	@if [ -z "$(PYTHON_BIN)" ]; then \
@@ -32,3 +33,6 @@ test:
 
 train:
 	$(POETRY) run python -m $(PACKAGE_MODULE).train --config $(CONFIG_PATH)
+
+fetch-data:
+	$(POETRY) run python -m $(PACKAGE_MODULE).dataset_fetch

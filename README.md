@@ -92,6 +92,7 @@ Qualquer desvio nessa direção deve ser uma decisão explícita, não o caminho
 - Especificação inicial do projeto: [doc/PROJECT_SPEC.md](./doc/PROJECT_SPEC.md)
 - Decisão de dataset e baseline: [doc/DATASET_DECISION.md](./doc/DATASET_DECISION.md)
 - Spec da estrutura mínima: [doc/MINIMAL_PROJECT_STRUCTURE_SPEC.md](./doc/MINIMAL_PROJECT_STRUCTURE_SPEC.md)
+- Rastreabilidade dos requisitos de entrega: [doc/DELIVERY_REQUIREMENTS_TRACEABILITY.md](./doc/DELIVERY_REQUIREMENTS_TRACEABILITY.md)
 
 ## Como inicializar
 
@@ -120,9 +121,24 @@ Comandos disponíveis:
 
 ## Observação sobre dados
 
-O repositório já está preparado para o dataset escolhido, mas o arquivo bruto ainda precisa ser colocado em:
+O repositório já está preparado para o dataset escolhido.
+
+Aquisição recomendada a partir da UCI:
+
+```bash
+poetry add ucimlrepo
+make fetch-data
+```
+
+Isso salva o CSV oficial em:
 
 - `data/external/online_shoppers_intention.csv`
+
+Se o arquivo já existir e você quiser substituir, use:
+
+```bash
+poetry run python -m purchase_propensity.dataset_fetch --overwrite
+```
 
 ## Próximos passos recomendados
 
