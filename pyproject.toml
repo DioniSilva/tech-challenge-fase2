@@ -1,17 +1,19 @@
-[tool.poetry]
+[project]
 name = "tech-challenge-fase-2"
 version = "0.1.0"
 description = "FIAP Phase 02 Tech Challenge baseline for purchase propensity prediction."
 readme = "README.md"
-packages = [{ include = "purchase_propensity", from = "src" }]
+requires-python = ">=3.11,<3.13"
+dependencies = [
+    "pandas>=2.3.1,<3.0.0",
+    "scikit-learn>=1.7.1,<2.0.0",
+    "pyyaml>=6.0.2,<7.0.0",
+    "python-dotenv>=1.1.1,<2.0.0",
+    "ucimlrepo>=0.0.7,<0.0.8",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.11,<3.13"
-pandas = "^2.3.1"
-scikit-learn = "^1.7.1"
-pyyaml = "^6.0.2"
-python-dotenv = "^1.1.1"
-ucimlrepo = "^0.0.7"
+[tool.poetry]
+packages = [{ include = "purchase_propensity", from = "src" }]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"

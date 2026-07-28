@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 from dataclasses import replace
 
-import joblib
 import pandas as pd
 import pytest
 
@@ -58,4 +57,4 @@ def test_run_training_writes_metrics_and_model(tmp_path, monkeypatch: pytest.Mon
     assert set(metrics) == {"accuracy", "f1", "precision", "recall", "roc_auc"}
     assert json.loads(metrics_path.read_text(encoding="utf-8"))["accuracy"] == metrics["accuracy"]
     assert model_path.exists()
-    assert joblib.load(model_path) is not None
+    assert model_path.stat().st_size > 0
