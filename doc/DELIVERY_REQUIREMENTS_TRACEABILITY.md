@@ -39,13 +39,17 @@ Requisitos principais:
 
 Status atual:
 
-- `Parcialmente atendido`
+- `Atendido com pendências menores`
 
 Evidências:
 
 - Estrutura base presente em `src/`, `tests/`, `data/`, `configs/`, `scripts/` e `doc/`
 - `type hints` já aparecem nos módulos principais
-- Ainda faltam docstrings e uma revisão objetiva de Clean Code contra o critério do PDF
+
+Pendências:
+
+- ampliar docstrings nos módulos principais
+- revisar funções maiores sob a ótica do critério de Clean Code da pós
 
 ### Etapa 2 - Ambiente e Dependências
 
@@ -58,18 +62,19 @@ Requisitos principais:
 
 Status atual:
 
-- `Parcialmente atendido`
+- `Atendido`
 
 Evidências:
 
 - `pyproject.toml` presente
 - `.env.example` presente
 - fluxo de setup documentado no `README.md`
+- `poetry.lock` presente
+- `make check` validado sem warnings
 
-Pendências:
+Pendências menores:
 
-- confirmar e manter o lock file commitado como parte obrigatória da entrega
-- validar o fluxo completo de instalação a partir de clone limpo como evidência de entrega
+- registrar explicitamente a validação em clone limpo na documentação final
 
 ### Etapa 3 - Containerização e Versionamento
 
@@ -81,14 +86,14 @@ Requisitos principais:
 
 Status atual:
 
-- `Não atendido`
+- `Atendido`
 
-Pendências:
+Evidências:
 
-- adicionar `dvc.yaml`
-- definir estágios mínimos do pipeline, preferencialmente `preprocess -> train`
-- adicionar `Dockerfile`
-- documentar execução via Docker
+- `dvc.yaml` implementado com `prepare -> train`
+- dataset bruto rastreado por `DVC`
+- `Dockerfile` funcional criado
+- execução em container validada com `docker build`, `docker-prepare`, `docker-train` e `docker-dvc-repro`
 
 ### Etapa 4 - Modelagem, Registry e Entrega
 
@@ -102,21 +107,21 @@ Requisitos principais:
 
 Status atual:
 
-- `Parcialmente atendido`
+- `Atendido com pendência de entrega final`
 
 Evidências:
 
 - baseline com `LogisticRegression`
 - carregamento de dados, pré-processamento, treino e avaliação já implementados
 - testes automatizados cobrindo dados, features e treino
+- `MLflow` integrado com tracking local
+- modelo registrado no `MLflow Model Registry`
+- fluxo fechado com dataset real
+- `README.md` atualizado com DVC, MLflow e Docker
 
 Pendências:
 
-- integrar `MLflow`
-- registrar modelo no registry
-- fechar o fluxo com dataset real
-- completar o `README.md` com DVC, MLflow e Docker
-- preparar roteiro e evidências para o vídeo STAR
+- preparar roteiro e evidências do vídeo STAR
 
 ## Critérios de avaliação da pós
 
@@ -136,22 +141,20 @@ Atende hoje:
 - baseline clássico com `Scikit-Learn`
 - estrutura mínima do projeto
 - testes automatizados básicos
-
-Ainda não atende como entrega final:
-
 - `DVC`
 - `MLflow`
 - `Model Registry`
 - `Dockerfile`
 - execução ponta a ponta com dataset real
+
+Ainda não atende como entrega final:
+
 - evidência do vídeo STAR
+- validação documentada a partir de clone limpo
 
 ## Ordem recomendada de implementação
 
-1. Colocar o dataset real em `data/external/online_shoppers_intention.csv`
-2. Fechar o fluxo mínimo de preparação e treino para o dataset real
-3. Adicionar `DVC` com pipeline reprodutível
-4. Integrar `MLflow` com logging de parâmetros, métricas e modelo
-5. Adicionar `Dockerfile` e documentar execução
-6. Fechar o `README.md` final com instruções completas de reprodução
-7. Preparar o roteiro do vídeo STAR com base nos artefatos do repo
+1. Consolidar a documentação final da reprodução local e Docker
+2. Registrar uma validação em clone limpo como evidência de reprodutibilidade
+3. Preparar o roteiro do vídeo STAR com base nos artefatos do repo
+4. Revisar Clean Code e docstrings onde ainda houver lacunas

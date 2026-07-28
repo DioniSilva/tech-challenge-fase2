@@ -79,12 +79,14 @@ Qualquer desvio nessa direção deve ser uma decisão explícita, não o caminho
 
 - Fonte oficial do desafio validada.
 - `AGENTS.md` criado para orientar desenvolvimento agentico.
-- Documentação-base do projeto iniciada.
+- Documentação-base do projeto consolidada.
 - Dataset principal definido: **Online Shoppers Purchasing Intention Dataset**.
 - Target definido: **`Revenue`**.
 - Baseline inicial definido: **`LogisticRegression`**.
-- Estrutura mínima do projeto aplicada com `Makefile` + `Poetry`.
-- Baseline e pipeline ainda estão em estágio inicial.
+- Estrutura do projeto aplicada com `Makefile` + `Poetry`.
+- Pipeline reproduzível com `DVC` implementado.
+- Tracking local com `MLflow` e Model Registry implementados.
+- Execução em `Docker` implementada e validada.
 
 ## Documentação do projeto
 
@@ -106,9 +108,9 @@ Fluxo mínimo:
 ```bash
 make venv
 make setup
-make prepare
 make test
-make train
+make fetch-data
+make dvc-repro
 ```
 
 Comandos disponíveis:
@@ -118,9 +120,15 @@ Comandos disponíveis:
 - `make setup`: inicializa o ambiente e instala dependências com `Poetry`
 - `make check`: valida o `pyproject.toml`
 - `make test`: executa os testes
+- `make fetch-data`: baixa o dataset oficial da UCI para `data/external/`
 - `make prepare`: gera os conjuntos processados de treino e teste
 - `make train`: treina o baseline a partir dos dados processados
 - `make dvc-repro`: reproduz o pipeline definido no `dvc.yaml`
+- `make mlflow-ui`: sobe a UI local do `MLflow`
+- `make docker-build`: gera a imagem Docker local
+- `make docker-prepare`: executa a etapa de preparação em container
+- `make docker-train`: executa o treino em container
+- `make docker-dvc-repro`: executa o pipeline completo em container
 
 ## Observação sobre dados
 
@@ -129,7 +137,6 @@ O repositório já está preparado para o dataset escolhido.
 Aquisição recomendada a partir da UCI:
 
 ```bash
-poetry add ucimlrepo
 make fetch-data
 ```
 
@@ -150,6 +157,7 @@ Fluxo mínimo esperado para a entrega:
 ```bash
 make fetch-data
 make dvc-repro
+make mlflow-ui
 ```
 
 Saídas principais do pipeline:
@@ -183,16 +191,39 @@ Configuração padrão:
 Para inspecionar localmente a UI:
 
 ```bash
-poetry run mlflow ui --backend-store-uri sqlite:///mlruns/mlflow.db
+make mlflow-ui
 ```
+
+## Execucao com Docker
+
+Build da imagem local:
+
+```bash
+make docker-build
+```
+
+Executar os passos principais em container:
+
+```bash
+make docker-prepare
+make docker-train
+make docker-dvc-repro
+```
+
+Observacoes:
+
+- os alvos Docker montam o repositorio no mesmo caminho absoluto do host
+- os arquivos gerados em `data/processed/`, `artifacts/` e `mlruns/` ficam persistidos no host
+- a imagem usa `Poetry` sem depender da `.venv` local do host
+- o dataset bruto precisa existir no repositorio antes de rodar `docker-prepare` ou `docker-dvc-repro`
 
 ## Próximos passos recomendados
 
-1. Documentar o schema mínimo de features e target.
-2. Colocar o dataset bruto em `data/external/`.
-3. Implementar e validar o baseline com `LogisticRegression`.
-4. Adicionar `DVC`, `MLflow` e `Docker`.
-5. Evoluir a avaliação e os artefatos de entrega.
+1. Refinar a documentação final da entrega com evidências objetivas dos fluxos local e Docker.
+2. Validar o projeto a partir de clone limpo para consolidar a reprodutibilidade exigida pela pós.
+3. Preparar o roteiro do vídeo STAR com base em `DVC`, `MLflow`, `Docker` e métricas do baseline.
+4. Revisar Clean Code e docstrings nos módulos principais.
+5. Organizar o histórico de commits final para a entrega.
 
 ## Critério de sucesso
 
@@ -204,4 +235,5 @@ Este repositório estará bem encaminhado quando conseguir provar, por meio dos 
 - pipeline reproduzível;
 - experimentos rastreados;
 - modelo registrado;
+- execução reproduzível em Docker;
 - README suficiente para reprodução da entrega.

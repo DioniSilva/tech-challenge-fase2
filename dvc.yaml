@@ -1,6 +1,6 @@
 stages:
   prepare:
-    cmd: poetry run python -m purchase_propensity.prepare --config configs/base.yaml
+    cmd: python -m purchase_propensity.prepare --config configs/base.yaml
     deps:
       - configs/base.yaml
       - data/external/online_shoppers_intention.csv
@@ -12,7 +12,7 @@ stages:
       - data/processed/test.csv
 
   train:
-    cmd: poetry run python -m purchase_propensity.train --config configs/base.yaml
+    cmd: python -m purchase_propensity.train --config configs/base.yaml
     deps:
       - configs/base.yaml
       - data/processed/train.csv
