@@ -37,12 +37,21 @@ class ArtifactConfig:
 
 
 @dataclass(frozen=True)
+class MlflowConfig:
+    tracking_uri: str
+    experiment_name: str
+    registered_model_name: str
+    model_artifact_name: str
+
+
+@dataclass(frozen=True)
 class AppConfig:
     dataset: DatasetConfig
     split: SplitConfig
     model: ModelConfig
     processed: ProcessedDataConfig
     artifacts: ArtifactConfig
+    mlflow: MlflowConfig
 
 
 def load_config(config_path: str | Path) -> AppConfig:
@@ -68,5 +77,11 @@ def load_config(config_path: str | Path) -> AppConfig:
         artifacts=ArtifactConfig(
             model_path=Path(payload["artifacts"]["model_path"]),
             metrics_path=Path(payload["artifacts"]["metrics_path"]),
+        ),
+        mlflow=MlflowConfig(
+            tracking_uri=payload["mlflow"]["tracking_uri"],
+            experiment_name=payload["mlflow"]["experiment_name"],
+            registered_model_name=payload["mlflow"]["registered_model_name"],
+            model_artifact_name=payload["mlflow"].get("model_artifact_name", "model"),
         ),
     )

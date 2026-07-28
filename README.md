@@ -164,6 +164,28 @@ O `dvc.yaml` materializa o fluxo mínimo aderente ao PDF:
 - `prepare`: valida o dataset bruto e gera os splits processados
 - `train`: treina o baseline e salva métricas + modelo
 
+## Tracking com MLflow
+
+O treino agora registra automaticamente:
+
+- parâmetros do dataset, split e modelo
+- métricas do baseline
+- arquivos de configuração e métricas
+- o modelo no Tracking
+- uma versão registrada no Model Registry local
+
+Configuração padrão:
+
+- Tracking URI: `sqlite:///mlruns/mlflow.db`
+- Experimento: `tech-challenge-fase-2`
+- Modelo registrado: `purchase-propensity-baseline`
+
+Para inspecionar localmente a UI:
+
+```bash
+poetry run mlflow ui --backend-store-uri sqlite:///mlruns/mlflow.db
+```
+
 ## Próximos passos recomendados
 
 1. Documentar o schema mínimo de features e target.

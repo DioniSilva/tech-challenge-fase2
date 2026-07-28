@@ -18,3 +18,9 @@ processed:
 artifacts:
   model_path: artifacts/model.joblib
   metrics_path: artifacts/metrics.json
+
+mlflow:
+  tracking_uri: sqlite:///mlruns/mlflow.db
+  experiment_name: tech-challenge-fase-2
+  registered_model_name: purchase-propensity-baseline
+  model_artifact_name: baseline_model

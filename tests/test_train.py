@@ -51,6 +51,7 @@ def test_run_training_writes_metrics_and_model(tmp_path, monkeypatch: pytest.Mon
         ),
     )
     monkeypatch.setattr("purchase_propensity.train.load_config", lambda _: config)
+    monkeypatch.setattr("purchase_propensity.train.log_training_run", lambda **_: None)
 
     metrics = run_training("configs/base.yaml")
 

@@ -12,6 +12,7 @@ from purchase_propensity.config import AppConfig, load_config
 from purchase_propensity.data import load_dataset, split_features_target
 from purchase_propensity.evaluate import evaluate_model
 from purchase_propensity.features import build_preprocessor
+from purchase_propensity.mlflow_tracking import log_training_run
 
 
 def build_training_pipeline(features, config: AppConfig) -> Pipeline:
@@ -43,6 +44,15 @@ def run_training(config_path: str) -> dict[str, float]:
 
     _save_training_outputs(
         pipeline=pipeline,
+        metrics=metrics,
+        model_path=config.artifacts.model_path,
+        metrics_path=config.artifacts.metrics_path,
+    )
+    log_training_run(
+        config=config,
+        config_path=config_path,
+        pipeline=pipeline,
+        x_train=x_train,
         metrics=metrics,
         model_path=config.artifacts.model_path,
         metrics_path=config.artifacts.metrics_path,
