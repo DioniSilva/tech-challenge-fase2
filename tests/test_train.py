@@ -7,10 +7,8 @@ import pandas as pd
 import pytest
 
 from purchase_propensity.config import load_config
-from purchase_propensity.train import build_training_pipeline
-from purchase_propensity.train import run_training
-
-from tests.test_data import build_dataframe
+from purchase_propensity.train import build_training_pipeline, run_training
+from tests.helpers import build_dataframe
 
 
 def test_training_pipeline_fits_synthetic_dataset() -> None:
@@ -23,6 +21,14 @@ def test_training_pipeline_fits_synthetic_dataset() -> None:
 
     predictions = pipeline.predict(features)
     assert len(predictions) == len(target)
+
+
+def test_build_training_pipeline_rejects_unsupported_model() -> None:
+    config = load_config("configs/base.yaml")
+    config = replace(config, model=replace(config.model, name="RandomForest"))
+
+    with pytest.raises(ValueError, match="Unsupported model 'RandomForest'"):
+        build_training_pipeline(build_dataframe().drop(columns=["Revenue"]), config)
 
 
 def test_run_training_writes_metrics_and_model(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:

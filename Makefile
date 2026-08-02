@@ -12,13 +12,14 @@ DOCKER_RUN_FLAGS := --rm \
 	-v $(CURDIR):$(DOCKER_WORKDIR) \
 	-w $(DOCKER_WORKDIR)
 
-.PHONY: help venv setup check test prepare train fetch-data dvc-repro mlflow-ui docker-build docker-prepare docker-train docker-dvc-repro
+.PHONY: help venv setup check lint test prepare train fetch-data dvc-repro mlflow-ui docker-build docker-prepare docker-train docker-dvc-repro
 
 help:
 	@printf "Available targets:\n"
 	@printf "  make venv   - create the local Poetry virtual environment\n"
 	@printf "  make setup  - install project dependencies with Poetry\n"
 	@printf "  make check  - validate pyproject metadata\n"
+	@printf "  make lint   - run Ruff static analysis\n"
 	@printf "  make test   - run automated tests\n"
 	@printf "  make prepare - generate processed train/test splits from the raw dataset\n"
 	@printf "  make train  - run the baseline training entrypoint\n"
@@ -43,6 +44,9 @@ setup: venv
 
 check:
 	$(POETRY) check
+
+lint:
+	$(POETRY) run ruff check .
 
 test:
 	$(POETRY) run pytest -q

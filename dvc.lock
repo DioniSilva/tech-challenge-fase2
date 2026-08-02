@@ -13,16 +13,16 @@ stages:
       size: 1156949
     - path: src/purchase_propensity/config.py
       hash: md5
-      md5: 83941d5dd04f309ca3de22d12650d104
-      size: 2270
+      md5: 180043222d80627a321bc5f2fad08979
+      size: 4003
     - path: src/purchase_propensity/data.py
       hash: md5
-      md5: 88faf84b5b367f42bc977ed544cbf1cf
-      size: 1453
+      md5: 4461d9b6db0855105024e1c8013bc0ca
+      size: 2735
     - path: src/purchase_propensity/prepare.py
       hash: md5
-      md5: 464b36723081fd2163a12b27723584a6
-      size: 1490
+      md5: 447b78a2c94b3a3cd533b89eed9286c1
+      size: 1861
     outs:
     - path: data/processed/test.csv
       hash: md5
@@ -49,24 +49,28 @@ stages:
       size: 925538
     - path: src/purchase_propensity/config.py
       hash: md5
-      md5: 83941d5dd04f309ca3de22d12650d104
-      size: 2270
+      md5: 180043222d80627a321bc5f2fad08979
+      size: 4003
     - path: src/purchase_propensity/data.py
       hash: md5
-      md5: 88faf84b5b367f42bc977ed544cbf1cf
-      size: 1453
+      md5: 4461d9b6db0855105024e1c8013bc0ca
+      size: 2735
     - path: src/purchase_propensity/evaluate.py
       hash: md5
-      md5: 73b21e944851b6b6f5a24d7670af94b5
-      size: 664
+      md5: 700b2097bfed8d0b2bf1bd28b71ea108
+      size: 971
     - path: src/purchase_propensity/features.py
       hash: md5
-      md5: 59451c77d609820119e26653e56561d1
-      size: 1074
+      md5: f7934ace924df0282bf9b72d6f985905
+      size: 1326
+    - path: src/purchase_propensity/mlflow_tracking.py
+      hash: md5
+      md5: d856e45b16c1a4c35be5e88dc8b1e7d5
+      size: 3801
     - path: src/purchase_propensity/train.py
       hash: md5
-      md5: 1df33e5edc8fb84f4b10e14bc255ae63
-      size: 2895
+      md5: 4eb9cae1553cdb56098f5cdd9390b817
+      size: 4435
     outs:
     - path: artifacts/metrics.json
       hash: md5
@@ -74,5 +78,5 @@ stages:
       size: 165
     - path: artifacts/model.joblib
       hash: md5
-      md5: 583b6aa6ba621f39ad8b5b2b3a2227de
+      md5: 9171fda6eb99cc94fdcd9f2373cb2702
       size: 5642

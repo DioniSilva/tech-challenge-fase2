@@ -36,7 +36,7 @@ The structure must support a project that can be installed, run, and reviewed fr
 
 ### 3.3 Explicit separation of concerns
 
-Data, source code, configs, scripts, and documentation should not be mixed casually.
+Data, source code, configs, command entrypoints, and documentation should not be mixed casually.
 
 ### 3.4 Easy agent navigation
 
@@ -75,12 +75,10 @@ The minimum target structure is:
 ├── .gitignore
 ├── .dockerignore
 ├── doc/
-├── raw/
 ├── data/
 ├── src/
 ├── tests/
-├── configs/
-└── scripts/
+└── configs/
 ```
 
 ## 6. Folder-Level Contract
@@ -225,23 +223,6 @@ Rules:
 - configs should hold project settings, not secrets
 - secrets belong in `.env`
 
-### 6.7 `scripts/`
-
-Purpose:
-
-- thin executable wrappers for repeated project tasks
-
-Good early uses:
-
-- dataset fetch or copy helper
-- preprocessing runner
-- training runner
-
-Rules:
-
-- scripts should be small wrappers, not the main business logic
-- core logic should live under `src/`
-
 ## 7. Minimum Required Root Files
 
 ### 7.1 `pyproject.toml`
@@ -311,7 +292,7 @@ This means:
 
 - the project should have a clear place for raw and processed data
 - preprocessing and training entrypoints should be separable
-- scripts and source layout should map naturally to DVC stages
+- Make targets and source layout should map naturally to DVC stages
 
 Minimal future DVC stage mapping:
 
@@ -362,7 +343,6 @@ A compliant first scaffolding pass should create:
 - `src/`
 - `tests/`
 - `configs/`
-- `scripts/`
 - `data/`
 - root config files
 - `Makefile`

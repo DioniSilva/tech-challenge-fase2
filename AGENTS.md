@@ -116,9 +116,11 @@ Use a structure close to:
 - `data/`
 - `models/`
 - `configs/`
-- `scripts/`
+- `Makefile` for command entrypoints
 
-Adjust only when there is a clear technical reason.
+Adjust only when there is a clear technical reason. This repository uses the
+`Makefile` as its canonical command interface instead of duplicate shell
+wrappers.
 
 ### Documentation
 

@@ -1,33 +1,9 @@
 from __future__ import annotations
 
-import pandas as pd
+import pytest
 
-from purchase_propensity.data import split_features_target, validate_dataset
-
-
-def build_dataframe() -> pd.DataFrame:
-    return pd.DataFrame(
-        {
-            "Administrative": [0, 1, 2],
-            "Administrative_Duration": [0.0, 4.0, 8.0],
-            "Informational": [0, 1, 0],
-            "Informational_Duration": [0.0, 3.2, 0.0],
-            "ProductRelated": [1, 4, 9],
-            "ProductRelated_Duration": [10.0, 20.0, 40.0],
-            "BounceRates": [0.1, 0.05, 0.02],
-            "ExitRates": [0.2, 0.1, 0.08],
-            "PageValues": [0.0, 20.0, 50.0],
-            "SpecialDay": [0.0, 0.0, 0.2],
-            "Month": ["Feb", "Mar", "May"],
-            "OperatingSystems": [1, 2, 2],
-            "Browser": [1, 1, 2],
-            "Region": [1, 3, 2],
-            "TrafficType": [1, 2, 3],
-            "VisitorType": ["Returning_Visitor", "New_Visitor", "Returning_Visitor"],
-            "Weekend": [False, True, False],
-            "Revenue": [0, 1, 1],
-        }
-    )
+from purchase_propensity.data import load_dataset, split_features_target, validate_dataset
+from tests.helpers import build_dataframe
 
 
 def test_validate_dataset_accepts_expected_schema() -> None:
@@ -40,3 +16,43 @@ def test_split_features_target_returns_expected_shapes() -> None:
 
     assert "Revenue" not in features.columns
     assert target.tolist() == [0, 1, 1]
+
+
+def test_validate_dataset_rejects_missing_columns() -> None:
+    dataframe = build_dataframe().drop(columns=["Revenue"])
+
+    with pytest.raises(ValueError, match="missing required columns"):
+        validate_dataset(dataframe)
+
+
+def test_validate_dataset_rejects_empty_dataset() -> None:
+    dataframe = build_dataframe().iloc[0:0]
+
+    with pytest.raises(ValueError, match="at least one row"):
+        validate_dataset(dataframe)
+
+
+def test_validate_dataset_rejects_non_binary_target() -> None:
+    dataframe = build_dataframe()
+    dataframe.loc[0, "Revenue"] = 2
+
+    with pytest.raises(ValueError, match="only binary values"):
+        validate_dataset(dataframe)
+
+
+def test_validate_dataset_rejects_null_target() -> None:
+    dataframe = build_dataframe()
+    dataframe.loc[0, "Revenue"] = None
+
+    with pytest.raises(ValueError, match="must not contain null"):
+        validate_dataset(dataframe)
+
+
+def test_load_dataset_rejects_missing_path(tmp_path) -> None:
+    with pytest.raises(FileNotFoundError, match="Dataset not found"):
+        load_dataset(tmp_path / "missing.csv")
+
+
+def test_split_features_target_rejects_missing_target() -> None:
+    with pytest.raises(ValueError, match="Target column 'Missing' is not present"):
+        split_features_target(build_dataframe(), target_column="Missing")

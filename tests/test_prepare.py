@@ -7,8 +7,7 @@ import pytest
 
 from purchase_propensity.config import load_config
 from purchase_propensity.prepare import save_processed_splits
-
-from tests.test_data import build_dataframe
+from tests.helpers import build_dataframe
 
 
 def test_save_processed_splits_writes_train_and_test_csv(

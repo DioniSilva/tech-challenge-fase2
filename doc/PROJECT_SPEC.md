@@ -118,17 +118,18 @@ Examples explicitly aligned with the PDF:
 
 ### Code organization
 
-Preferred repository structure:
+ Preferred repository structure:
 
 ```text
 src/
 tests/
 data/
-models/
 configs/
-scripts/
 doc/
 ```
+
+The project uses the `Makefile` as the canonical command interface, so
+dedicated shell wrappers are not required in the current implementation.
 
 ### Packaging and environment
 

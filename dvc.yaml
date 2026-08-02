@@ -21,6 +21,7 @@ stages:
       - src/purchase_propensity/data.py
       - src/purchase_propensity/evaluate.py
       - src/purchase_propensity/features.py
+      - src/purchase_propensity/mlflow_tracking.py
       - src/purchase_propensity/train.py
     outs:
       - artifacts/model.joblib

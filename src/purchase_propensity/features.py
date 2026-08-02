@@ -8,6 +8,14 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 
 def build_preprocessor(features: pd.DataFrame) -> ColumnTransformer:
+    """Build preprocessing pipelines for numeric and categorical features.
+
+    Args:
+        features: Training features used to identify column types.
+
+    Returns:
+        A column transformer with imputation, scaling, and one-hot encoding.
+    """
     numeric_columns = features.select_dtypes(include=["number", "bool"]).columns.tolist()
     categorical_columns = [column for column in features.columns if column not in numeric_columns]
 

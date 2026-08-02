@@ -1,239 +1,169 @@
 # Tech Challenge Fase 2
 
-Repositório do Tech Challenge da Fase 2 da pós-tech FIAP.
+Sistema de classificação binária para estimar a propensão de compra em uma sessão de navegação de e-commerce. O projeto prioriza Engenharia de Machine Learning, reprodutibilidade e clareza operacional.
 
-## Objetivo
+## Dataset e target
 
-Construir um sistema preditivo para estimar a **propensão de compra** de um usuário com base em seu **comportamento de navegação** em um contexto de e-commerce.
+O projeto usa o [Online Shoppers Purchasing Intention Dataset](https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention), com 12.330 sessões. A coluna `Revenue` é o target binário: `1`/`True` indica que a sessão resultou em compra; `0`/`False` indica que não resultou.
 
-O foco principal deste projeto é **Engenharia de Machine Learning**:
+O baseline é `LogisticRegression` com `max_iter=1000`. A decisão está detalhada em [doc/DATASET_DECISION.md](./doc/DATASET_DECISION.md).
 
-- organização de código;
-- reprodutibilidade;
-- empacotamento do ambiente;
-- containerização;
-- versionamento de dados;
-- rastreamento de experimentos;
-- documentação de entrega.
+## Abordagem de programação
 
-## Fonte oficial
+O projeto combina programação orientada a objetos e programação funcional de
+forma intencional.
 
-A fonte de verdade do projeto é:
+Na programação orientada a objetos, o projeto utiliza:
 
-- `learning/postech-FIAP/raw/fase-02/01-final_project.pdf`
+- `dataclasses` imutáveis para configurações, como `AppConfig`, `DatasetConfig`
+  e `ModelConfig`, em [config.py](./src/purchase_propensity/config.py);
+- `ExportSummary` para representar o resultado da exportação do dataset, em
+  [dataset_fetch.py](./src/purchase_propensity/dataset_fetch.py);
+- componentes orientados a objetos do Scikit-Learn, como `Pipeline`,
+  `ColumnTransformer` e `LogisticRegression`.
 
-Se houver conflito entre este repositório, notas antigas e o PDF oficial, o PDF prevalece.
+Na programação funcional, o projeto utiliza funções pequenas e focadas em uma
+responsabilidade, sem estado global mutável. Exemplos incluem:
 
-## O que este projeto deve entregar
+- carregamento e validação em [data.py](./src/purchase_propensity/data.py);
+- construção do preprocessing em [features.py](./src/purchase_propensity/features.py);
+- avaliação em [evaluate.py](./src/purchase_propensity/evaluate.py);
+- orquestração do treinamento em [train.py](./src/purchase_propensity/train.py).
 
-### Obrigatório
+Essa combinação permite usar objetos para representar configurações, resultados
+e componentes do pipeline, enquanto as funções executam as transformações e as
+etapas do fluxo. Classes de serviço sem estado persistente não foram
+introduzidas para evitar complexidade desnecessária e manter o pipeline coeso e
+testável.
 
-- Repositório GitHub com implementação reproduzível.
-- Vídeo de até 5 minutos no formato STAR.
+## Requisitos
 
-### Opcional
+- Python `>=3.11,<3.13` (Python 3.11 ou 3.12)
+- [Poetry](https://python-poetry.org/), gerenciador suportado
+- Docker, apenas para o fluxo em container
 
-- Deploy em nuvem.
+O Poetry é a interface de dependências do projeto. O `poetry.lock` deve ser usado para reproduzir as versões instaladas. A configuração da aplicação fica em `configs/base.yaml`; o `.env` é reservado para overrides opcionais da configuração do MLflow.
 
-## Escopo técnico esperado
-
-- Problema de **classificação binária**.
-- Modelo clássico com **Scikit-Learn**.
-- Gerenciamento de dependências com `Poetry` ou `uv`.
-- Pipeline reproduzível com `DVC`.
-- Tracking e registry com `MLflow`.
-- Execução reproduzível com `Docker`.
-
-## Fora de escopo por padrão
-
-Este projeto **não** deve ser conduzido como:
-
-- sistema de recomendação;
-- projeto centrado em `PyTorch`;
-- projeto centrado em redes neurais;
-- experimento excessivamente orientado a pesquisa.
-
-Qualquer desvio nessa direção deve ser uma decisão explícita, não o caminho padrão.
-
-## Estrutura atual
-
-```text
-.
-├── AGENTS.md
-├── README.md
-├── Makefile
-├── pyproject.toml
-├── .env.example
-├── .gitignore
-├── .dockerignore
-├── doc/
-├── raw/
-├── src/
-├── tests/
-├── data/
-├── configs/
-└── scripts/
-```
-
-## Estado atual
-
-- Fonte oficial do desafio validada.
-- `AGENTS.md` criado para orientar desenvolvimento agentico.
-- Documentação-base do projeto consolidada.
-- Dataset principal definido: **Online Shoppers Purchasing Intention Dataset**.
-- Target definido: **`Revenue`**.
-- Baseline inicial definido: **`LogisticRegression`**.
-- Estrutura do projeto aplicada com `Makefile` + `Poetry`.
-- Pipeline reproduzível com `DVC` implementado.
-- Tracking local com `MLflow` e Model Registry implementados.
-- Execução em `Docker` implementada e validada.
-
-## Documentação do projeto
-
-- Guia para agentes: [AGENTS.md](./AGENTS.md)
-- Especificação inicial do projeto: [doc/PROJECT_SPEC.md](./doc/PROJECT_SPEC.md)
-- Decisão de dataset e baseline: [doc/DATASET_DECISION.md](./doc/DATASET_DECISION.md)
-- Spec da estrutura mínima: [doc/MINIMAL_PROJECT_STRUCTURE_SPEC.md](./doc/MINIMAL_PROJECT_STRUCTURE_SPEC.md)
-- Rastreabilidade dos requisitos de entrega: [doc/DELIVERY_REQUIREMENTS_TRACEABILITY.md](./doc/DELIVERY_REQUIREMENTS_TRACEABILITY.md)
-
-## Como inicializar
-
-Pré-requisito:
-
-- `poetry` instalado na máquina
-- `python3.11` ou `python3.12` disponível no shell
-
-Fluxo mínimo:
+## Instalação e validação
 
 ```bash
-make venv
 make setup
+make check
+make lint
 make test
-make fetch-data
-make dvc-repro
 ```
 
-Comandos disponíveis:
+`make setup` seleciona Python 3.12 ou 3.11, cria o ambiente virtual local `.venv` e instala as dependências usando o lock file. `make check` valida os metadados do projeto, `make lint` executa a análise estática com Ruff e `make test` executa os testes com pytest.
 
-- `make help`: lista os alvos principais
-- `make venv`: cria o ambiente virtual local `.venv` com `Poetry`, tentando `python3.12` e depois `python3.11`
-- `make setup`: inicializa o ambiente e instala dependências com `Poetry`
-- `make check`: valida o `pyproject.toml`
-- `make test`: executa os testes
-- `make fetch-data`: baixa o dataset oficial da UCI para `data/external/`
-- `make prepare`: gera os conjuntos processados de treino e teste
-- `make train`: treina o baseline a partir dos dados processados
-- `make dvc-repro`: reproduz o pipeline definido no `dvc.yaml`
-- `make mlflow-ui`: sobe a UI local do `MLflow`
-- `make docker-build`: gera a imagem Docker local
-- `make docker-prepare`: executa a etapa de preparação em container
-- `make docker-train`: executa o treino em container
-- `make docker-dvc-repro`: executa o pipeline completo em container
+## Dados
 
-## Observação sobre dados
-
-O repositório já está preparado para o dataset escolhido.
-
-Aquisição recomendada a partir da UCI:
+Baixe o dataset oficial da UCI para o caminho configurado:
 
 ```bash
 make fetch-data
 ```
 
-Isso salva o CSV oficial em:
-
-- `data/external/online_shoppers_intention.csv`
-
-Se o arquivo já existir e você quiser substituir, use:
+O arquivo gerado é `data/external/online_shoppers_intention.csv`. O comando não substitui um arquivo existente. Para forçar a substituição:
 
 ```bash
 poetry run python -m purchase_propensity.dataset_fetch --overwrite
 ```
 
-## Pipeline com DVC
+O CSV bruto precisa existir antes de executar `make prepare`, `make dvc-repro` ou as etapas Docker. O arquivo é validado para conter as colunas esperadas e 12.330 linhas.
 
-Fluxo mínimo esperado para a entrega:
+## Pipeline DVC
 
 ```bash
-make fetch-data
-make dvc-repro
-make mlflow-ui
+make prepare
+make train
 ```
 
-Saídas principais do pipeline:
+Ou reproduza as duas etapas declaradas em `dvc.yaml`:
+
+```bash
+make dvc-repro
+```
+
+As etapas são:
+
+- `prepare`: lê o CSV bruto e cria `data/processed/train.csv` e `data/processed/test.csv`.
+- `train`: treina o baseline, avalia no conjunto de teste e cria o modelo e as métricas.
+
+O split é 80/20, usa `random_state=42` e estratificação pela coluna `Revenue`. O pré-processamento aplica imputação pela mediana e `StandardScaler` às colunas numéricas; às colunas categóricas aplica imputação pelo valor mais frequente e `OneHotEncoder(handle_unknown="ignore")`.
+
+As métricas calculadas no conjunto de teste são `accuracy`, `precision`, `recall`, `f1` e `roc_auc`.
+
+Artefatos gerados:
 
 - `data/processed/train.csv`
 - `data/processed/test.csv`
 - `artifacts/model.joblib`
 - `artifacts/metrics.json`
 
-O `dvc.yaml` materializa o fluxo mínimo aderente ao PDF:
+## MLflow
 
-- `prepare`: valida o dataset bruto e gera os splits processados
-- `train`: treina o baseline e salva métricas + modelo
-
-## Tracking com MLflow
-
-O treino agora registra automaticamente:
-
-- parâmetros do dataset, split e modelo
-- métricas do baseline
-- arquivos de configuração e métricas
-- o modelo no Tracking
-- uma versão registrada no Model Registry local
-
-Configuração padrão:
+O treino registra as execuções localmente em SQLite, usando:
 
 - Tracking URI: `sqlite:///mlruns/mlflow.db`
 - Experimento: `tech-challenge-fase-2`
 - Modelo registrado: `purchase-propensity-baseline`
 
-Para inspecionar localmente a UI:
+O Registry é local e não corresponde a um servidor MLflow hospedado. O treino registra parâmetros, métricas, configuração, relatório de métricas e modelo.
+
+O DVC é a fonte de reprodutibilidade do pipeline e controla os dados processados,
+o modelo operacional e as métricas. O MLflow é a fonte de tracking e Registry;
+`mlruns/` é estado local não versionado pelo DVC e pode ser recriado ao executar
+o treinamento.
+
+As variáveis `MLFLOW_TRACKING_URI`, `MLFLOW_EXPERIMENT_NAME` e `MLFLOW_REGISTERED_MODEL_NAME` podem substituir os valores padrão. Consulte [.env.example](./.env.example) para os demais parâmetros documentados.
+
+Para iniciar a UI local:
 
 ```bash
 make mlflow-ui
 ```
 
-## Execucao com Docker
+Acesse [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
-Build da imagem local:
+## Docker
 
 ```bash
 make docker-build
-```
-
-Executar os passos principais em container:
-
-```bash
 make docker-prepare
 make docker-train
+```
+
+Para reproduzir o pipeline DVC no container:
+
+```bash
 make docker-dvc-repro
 ```
 
-Observacoes:
+Os alvos Docker montam o diretório do repositório no mesmo caminho absoluto dentro do container. Assim, `data/processed/`, `artifacts/` e `mlruns/` permanecem no host. A imagem usa Python 3.12 e instala as dependências com Poetry, sem usar a `.venv` do host.
 
-- os alvos Docker montam o repositorio no mesmo caminho absoluto do host
-- os arquivos gerados em `data/processed/`, `artifacts/` e `mlruns/` ficam persistidos no host
-- a imagem usa `Poetry` sem depender da `.venv` local do host
-- o dataset bruto precisa existir no repositorio antes de rodar `docker-prepare` ou `docker-dvc-repro`
+O Docker não baixa o dataset automaticamente. Execute `make fetch-data` no host antes de `make docker-prepare` ou `make docker-dvc-repro`.
 
-## Próximos passos recomendados
+## Estrutura
 
-1. Refinar a documentação final da entrega com evidências objetivas dos fluxos local e Docker.
-2. Validar o projeto a partir de clone limpo para consolidar a reprodutibilidade exigida pela pós.
-3. Preparar o roteiro do vídeo STAR com base em `DVC`, `MLflow`, `Docker` e métricas do baseline.
-4. Revisar Clean Code e docstrings nos módulos principais.
-5. Organizar o histórico de commits final para a entrega.
+```text
+.
+├── .env.example
+├── Dockerfile
+├── Makefile
+├── README.md
+├── configs/base.yaml
+├── data/
+├── doc/
+├── dvc.yaml
+├── poetry.lock
+├── src/purchase_propensity/
+└── tests/
+```
 
-## Critério de sucesso
+## Documentação complementar
 
-Este repositório estará bem encaminhado quando conseguir provar, por meio dos próprios artefatos:
-
-- problema claramente definido;
-- dataset e target documentados;
-- ambiente instalável do zero;
-- pipeline reproduzível;
-- experimentos rastreados;
-- modelo registrado;
-- execução reproduzível em Docker;
-- README suficiente para reprodução da entrega.
+- [AGENTS.md](./AGENTS.md): contrato de desenvolvimento do repositório.
+- [doc/PROJECT_SPEC.md](./doc/PROJECT_SPEC.md): especificação inicial.
+- [doc/DATASET_DECISION.md](./doc/DATASET_DECISION.md): decisão do dataset e do baseline.
+- [doc/MINIMAL_PROJECT_STRUCTURE_SPEC.md](./doc/MINIMAL_PROJECT_STRUCTURE_SPEC.md): estrutura mínima.
+- [doc/DELIVERY_REQUIREMENTS_TRACEABILITY.md](./doc/DELIVERY_REQUIREMENTS_TRACEABILITY.md): rastreabilidade dos requisitos de entrega e backlog.

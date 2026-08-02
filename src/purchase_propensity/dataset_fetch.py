@@ -62,6 +62,19 @@ def export_online_shoppers_dataset(
     *,
     overwrite: bool = False,
 ) -> ExportSummary:
+    """Fetch, validate, and export the official UCI dataset.
+
+    Args:
+        output_path: Destination path for the exported CSV.
+        overwrite: Whether to replace an existing destination file.
+
+    Returns:
+        Summary of the exported dataset.
+
+    Raises:
+        FileExistsError: If the destination exists and overwrite is false.
+        ValueError: If the fetched data does not match the expected schema.
+    """
     path = Path(output_path)
     if path.exists() and not overwrite:
         raise FileExistsError(
@@ -90,6 +103,7 @@ def export_online_shoppers_dataset(
 
 
 def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments for dataset acquisition."""
     parser = argparse.ArgumentParser(
         description="Fetch the official UCI Online Shoppers dataset and save it locally."
     )
@@ -107,6 +121,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    """Fetch the dataset and print an export summary."""
     args = parse_args()
     summary = export_online_shoppers_dataset(output_path=args.output, overwrite=args.overwrite)
     print(

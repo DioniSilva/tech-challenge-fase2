@@ -25,6 +25,6 @@ COPY pyproject.toml poetry.lock README.md Makefile ./
 RUN poetry install --with dev --no-root
 
 COPY . .
-RUN mkdir -p artifacts mlruns data/external data/interim data/processed
+RUN mkdir -p artifacts mlruns data/external data/processed
 
 CMD ["make", "train"]

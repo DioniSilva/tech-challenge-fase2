@@ -6,6 +6,16 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_sc
 
 
 def evaluate_model(y_true: Any, y_pred: Any, y_score: Any | None = None) -> dict[str, float]:
+    """Calculate classification metrics for predictions.
+
+    Args:
+        y_true: Ground-truth binary labels.
+        y_pred: Predicted binary labels.
+        y_score: Optional positive-class scores for ROC AUC.
+
+    Returns:
+        Accuracy, precision, recall, F1, and optional ROC AUC metrics.
+    """
     metrics = {
         "accuracy": float(accuracy_score(y_true, y_pred)),
         "precision": float(precision_score(y_true, y_pred, zero_division=0)),

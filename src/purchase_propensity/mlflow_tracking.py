@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 from pathlib import Path
 from typing import Any
 
@@ -8,7 +7,6 @@ import mlflow
 import mlflow.sklearn
 import pandas as pd
 from mlflow.models import infer_signature
-from dotenv import load_dotenv
 from sklearn.pipeline import Pipeline
 
 from purchase_propensity.config import AppConfig
@@ -19,19 +17,25 @@ def log_training_run(
     config: AppConfig,
     config_path: str | Path,
     pipeline: Pipeline,
-    x_train,
+    x_train: pd.DataFrame,
     metrics: dict[str, float],
     model_path: Path,
     metrics_path: Path,
 ) -> None:
-    load_dotenv()
+    """Log a training run, artifacts, and the model registry version.
 
-    tracking_uri = os.getenv("MLFLOW_TRACKING_URI", config.mlflow.tracking_uri)
-    experiment_name = os.getenv("MLFLOW_EXPERIMENT_NAME", config.mlflow.experiment_name)
-    registered_model_name = os.getenv(
-        "MLFLOW_REGISTERED_MODEL_NAME",
-        config.mlflow.registered_model_name,
-    )
+    Args:
+        config: Application configuration used by the training run.
+        config_path: Path to the configuration artifact.
+        pipeline: Fitted scikit-learn pipeline.
+        x_train: Training features used for model signature inference.
+        metrics: Evaluation metrics to log.
+        model_path: Path to the serialized model artifact.
+        metrics_path: Path to the serialized metrics artifact.
+    """
+    tracking_uri = config.mlflow.tracking_uri
+    experiment_name = config.mlflow.experiment_name
+    registered_model_name = config.mlflow.registered_model_name
 
     _ensure_sqlite_parent_directory(tracking_uri)
     mlflow.set_tracking_uri(tracking_uri)
@@ -46,7 +50,7 @@ def log_training_run(
         "model_name": config.model.name,
     }
 
-    with mlflow.start_run(run_name=f"{config.model.name}-purchase-propensity") as run:
+    with mlflow.start_run(run_name=f"{config.model.name}-purchase-propensity"):
         mlflow.log_params(params)
         mlflow.log_metrics(metrics)
         mlflow.set_tags(tags)

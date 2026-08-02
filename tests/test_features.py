@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from purchase_propensity.features import build_preprocessor
-
 from tests.test_data import build_dataframe
 
 

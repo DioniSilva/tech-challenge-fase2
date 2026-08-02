@@ -9,7 +9,15 @@ from purchase_propensity.config import load_config
 from purchase_propensity.data import load_dataset
 
 
-def save_processed_splits(config_path: str) -> tuple[Path, Path]:
+def save_processed_splits(config_path: str | Path) -> tuple[Path, Path]:
+    """Create and persist stratified train and test dataset splits.
+
+    Args:
+        config_path: Path to the YAML configuration file.
+
+    Returns:
+        Paths to the generated training and test CSV files.
+    """
     config = load_config(config_path)
     dataframe = load_dataset(config.dataset.raw_path)
 
@@ -29,6 +37,7 @@ def save_processed_splits(config_path: str) -> tuple[Path, Path]:
 
 
 def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments for the preparation entrypoint."""
     parser = argparse.ArgumentParser(description="Prepare the processed train/test splits.")
     parser.add_argument(
         "--config",
@@ -39,6 +48,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    """Run the dataset preparation command and report generated paths."""
     args = parse_args()
     train_path, test_path = save_processed_splits(config_path=args.config)
     print(f"Saved processed splits to {train_path} and {test_path}.")
