@@ -178,3 +178,8 @@ O Docker não baixa o dataset automaticamente. Execute `make fetch-data` no host
 - [doc/DATASET_DECISION.md](./doc/DATASET_DECISION.md): decisão do dataset e do baseline.
 - [doc/CLEAN_CLONE_VALIDATION.md](./doc/CLEAN_CLONE_VALIDATION.md): evidência da validação em clone limpo.
 - [doc/DELIVERY_STATUS.md](./doc/DELIVERY_STATUS.md): status atual dos requisitos e pendências.
+
+## Evoluções futuras
+
+Sugestões de evolução de infraestrutura, sem impacto nos requisitos obrigatórios
+atuais, estão documentadas em [doc/FUTURE_EVOLUTIONS.md](./doc/FUTURE_EVOLUTIONS.md).
