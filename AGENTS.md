@@ -8,11 +8,8 @@ language: en
 
 Use this file as the agent contract for `repos/tech-challenges/tech-challenge-fase-2`.
 
-This project is for the FIAP Phase 02 Tech Challenge. The current official requirements are defined by the PDF stored at:
-
-- `learning/postech-FIAP/raw/fase-02/01-final_project.pdf`
-
-If any older note, notebook, or decision conflicts with that PDF, the PDF wins.
+This project is for the FIAP Phase 02 Tech Challenge. The repository
+documentation and implementation describe the current project state.
 
 ## Project Goal
 
@@ -35,17 +32,6 @@ This challenge is primarily about **ML Engineering**, not about advanced modelin
 - Not a research-heavy modeling challenge.
 
 Do not steer the repo toward embeddings, ranking, next-item recommendation, or recommender-specific metrics unless the user explicitly asks for an exploratory side path.
-
-## Source Of Truth
-
-Read sources in this order:
-
-1. `learning/postech-FIAP/raw/fase-02/01-final_project.pdf`
-2. `learning/postech-FIAP/curadoria/fase-02-containers-e-ambientes-reprodutiveis/Tech Challenge - Fase 02.md`
-3. `learning/postech-FIAP/curadoria/fase-02-containers-e-ambientes-reprodutiveis/estudos/Checklist de evidências - Tech Challenge Fase 02.md`
-4. Files already present in this repository
-
-When sources disagree, prefer the highest item in the list.
 
 ## Expected Technical Direction
 
@@ -114,7 +100,7 @@ Use a structure close to:
 - `src/`
 - `tests/`
 - `data/`
-- `models/`
+- `artifacts/`
 - `configs/`
 - `Makefile` for command entrypoints
 

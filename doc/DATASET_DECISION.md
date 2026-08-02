@@ -1,75 +1,79 @@
-# Dataset Decision
+# Decisão de Dataset e Baseline
 
-## Decision Summary
+## Resumo da decisão
 
-Decision date: `2026-07-23`
+Data da decisão: `2026-07-23`
 
-- Selected dataset: `Online Shoppers Purchasing Intention Dataset`
-- Selected baseline: `LogisticRegression`
-- Target column: `Revenue`
-- Problem type: binary classification
+- Dataset selecionado: `Online Shoppers Purchasing Intention Dataset`
+- Baseline selecionado: `LogisticRegression`
+- Coluna target: `Revenue`
+- Tipo de problema: classificação binária
 
-## Why This Decision Was Made
+## Motivos da decisão
 
-This dataset is the most pragmatic fit for the current Tech Challenge because it matches the official requirements with minimal ambiguity.
+Este dataset é a opção mais adequada e pragmática para o Tech Challenge porque atende
+ao escopo oficial com pouca ambiguidade.
 
-It was selected because:
+Ele foi selecionado porque:
 
-- it is explicitly aligned with the official Phase 02 PDF suggestions;
-- it already represents an e-commerce browsing context;
-- it already exposes a binary target (`Revenue`);
-- it avoids turning the project into a target-engineering exercise too early;
-- it supports a fast path toward reproducible ML Engineering evidence.
+- representa um contexto de navegação em e-commerce;
+- possui um target binário nativo (`Revenue`);
+- evita transformar o projeto inicialmente em um problema de engenharia do
+  alvo;
+- permite chegar rapidamente a evidências reproduzíveis de ML Engineering.
 
-## Why Other Previously Explored Datasets Were Not Chosen
+## Datasets não selecionados
 
 ### RetailRocket
 
-- Strong fit for recommendation and event-based interaction modeling.
-- Weak fit for the current official challenge framing.
-- Would push the project toward recommender-system design and derived targets.
+- Tem forte aderência a recomendação e eventos de interação.
+- Não é o melhor encaixe para a classificação de propensão de compra deste
+  projeto.
+- Poderia direcionar o projeto para arquitetura de recomendação.
 
 ### Instacart
 
-- Strong technical benchmark for purchase-history modeling.
-- Still not a natural purchase-propensity classification dataset.
-- Better suited for recommendation or reorder-style problems.
+- É um benchmark relevante para histórico de compras.
+- Não representa naturalmente o problema atual de classificação de propensão.
+- É mais adequado para recomendação ou previsão de recompra.
 
 ### Olist
 
-- Strong business context and richer relational signals.
-- However, it requires deriving a clean binary target and defining the analysis grain carefully.
-- Higher early-stage ambiguity than the chosen dataset.
+- Possui contexto de negócio e sinais relacionais ricos.
+- Exigiria derivar um target binário e definir cuidadosamente a granularidade
+  da análise.
+- Apresenta maior ambiguidade inicial que o dataset escolhido.
 
 ### MovieLens
 
-- Canonical for recommendation benchmarks.
-- Misaligned with the current challenge framing.
+- É um benchmark clássico de recomendação.
+- Não é aderente ao enquadramento atual do desafio.
 
-## Baseline Rationale
+## Justificativa do baseline
 
-`LogisticRegression` was chosen as the first baseline because it is:
+`LogisticRegression` foi escolhido como baseline porque é:
 
-- simple;
-- interpretable;
-- standard for tabular binary classification;
-- easy to reproduce;
-- sufficient for an engineering-first first milestone.
+- simples;
+- interpretável;
+- padrão para classificação binária tabular;
+- fácil de reproduzir;
+- suficiente para o primeiro marco de engenharia de machine learning.
 
-The goal of the baseline is not to maximize performance immediately. The goal is to establish a correct, reproducible, and documentable first version of the project.
+O objetivo inicial não é maximizar a performance. É estabelecer uma primeira
+versão correta, reproduzível e documentável.
 
-## Implementation Consequences
+## Consequências da decisão
 
-This decision implies:
+Esta decisão implica que:
 
-- the project should be structured around session-level binary classification;
-- the first training pipeline should be built around `Revenue`;
-- preprocessing should prioritize clarity and reproducibility;
-- evaluation should use standard classification metrics;
-- MLflow runs should compare future models against `LogisticRegression`.
+- o projeto seja estruturado como classificação binária em nível de sessão;
+- o primeiro pipeline de treinamento use `Revenue`;
+- o preprocessing priorize clareza e reprodutibilidade;
+- a avaliação utilize métricas padrão de classificação;
+- futuros modelos sejam comparados com o baseline `LogisticRegression`.
 
-## Source References
+## Documentação relacionada
 
-- Official challenge PDF: `learning/postech-FIAP/raw/fase-02/01-final_project.pdf`
-- Project guidance: `./PROJECT_SPEC.md`
-- Agent guidance: `../AGENTS.md`
+- [Arquitetura](./ARCHITECTURE.md)
+- [Status da entrega](./DELIVERY_STATUS.md)
+- [Orientações para agentes](../AGENTS.md)
