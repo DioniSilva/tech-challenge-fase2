@@ -155,7 +155,6 @@ Atende hoje:
 Ainda não atende como entrega final:
 
 - evidência do vídeo STAR
-- validação documentada a partir de clone limpo
 
 ## Validação executada em 2026-07-28
 
@@ -195,8 +194,9 @@ refatoração do treinamento e organização estrutural:
 - `make dvc-repro` confirmou que os estágios estão atualizados.
 - `git diff --check` passou.
 
-O clone limpo e a validação Docker permanecem como evidências de entrega a
-serem executadas na etapa específica de reprodutibilidade.
+O clone limpo e a validação Docker estão documentados em
+`doc/CLEAN_CLONE_VALIDATION.md`. A evidência de entrega ainda pendente é o vídeo
+STAR.
 
 ## Ordem recomendada de implementação
 
